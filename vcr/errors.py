@@ -1,5 +1,12 @@
 class CannotOverwriteExistingCassetteException(Exception):
-    pass
+    def __init__(self, request, fixture, mode):
+        self.request = request
+        self.fixture = fixture
+        self.mode = mode
+        super(CannotOverwriteExistingCassetteException, self).__init__(
+            "No match for %r was found in the vcrpy cassete %r."
+            "Can't overwrite the cassette in record mode %r."
+            % (self.request, self.fixture, self.mode))
 
 
 class UnhandledHTTPRequestError(Exception):
