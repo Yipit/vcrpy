@@ -221,9 +221,8 @@ class VCRConnection(object):
                 self._vcr_request
             ):
                 raise CannotOverwriteExistingCassetteException(
-                    "No match for the request (%r) was found. "
-                    "Can't overwrite existing cassette (%r) in "
-                    "your current record mode (%r)."
+                    "No match for %r was found in the vcrpy cassete %r. "
+                    "Can't overwrite the cassette in record mode %r."
                     % (self._vcr_request, self.cassette._path,
                        self.cassette.record_mode)
                 )
