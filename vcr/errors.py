@@ -4,7 +4,7 @@ class CannotOverwriteExistingCassetteException(Exception):
         self.fixture = fixture
         self.mode = mode
         super(CannotOverwriteExistingCassetteException, self).__init__(
-            "No match for %r was found in the vcrpy cassete %r."
+            "No match for %r was found in the vcrpy cassette %r."
             "Can't overwrite the cassette in record mode %r."
             % (self.request, self.fixture, self.mode))
 
