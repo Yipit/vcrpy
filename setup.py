@@ -22,7 +22,7 @@ setup(
     name='yipit_vcrpy',
     # we are branching upstream's 1.2.0.
     # so, lets keep left-hand-side the upstream version and right-hand-side our version.
-    version='1.2.0.2',
+    version='1.2.0.3',
     description=(
         "Automatically mock your HTTP interactions to simplify and "
         "speed up testing"
