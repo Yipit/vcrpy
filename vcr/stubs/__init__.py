@@ -228,13 +228,7 @@ class VCRConnection(object):
             if self.cassette.write_protected and self.cassette.filter_request(
                 self._vcr_request
             ):
-                raise CannotOverwriteExistingCassetteException(
-                    "No match for the request (%r) was found. "
-                    "Can't overwrite existing cassette (%r) in "
-                    "your current record mode (%r)."
-                    % (self._vcr_request, self.cassette._path,
-                       self.cassette.record_mode)
-                )
+                raise CannotOverwriteExistingCassetteException(self._vcr_request, self.cassette._path, self.cassette.record_mode)
 
             # Otherwise, we should send the request, then get the response
             # and return it.

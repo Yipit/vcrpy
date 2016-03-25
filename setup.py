@@ -24,7 +24,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-install_requires = ['PyYAML', 'wrapt', 'six>=1.5']
+install_requires = ['PyYAML', 'wrapt', 'six>=1.5', 'SQLAlchemy']
 
 
 extras_require = {
@@ -50,8 +50,10 @@ except Exception:
 
 
 setup(
-    name='vcrpy',
-    version='1.7.4',
+    name='yipit_vcrpy',
+    # we are branching upstream's 1.2.0.
+    # so, lets keep left-hand-side the upstream version and right-hand-side our version.
+    version='1.2.0.3',
     description=(
         "Automatically mock your HTTP interactions to simplify and "
         "speed up testing"
