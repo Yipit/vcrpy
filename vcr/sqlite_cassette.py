@@ -72,5 +72,5 @@ class SQLiteCassette(cassette.Cassette):
         self._con = self._engine.connect()
 
     @classmethod
-    def use(cls, *args, **kwargs):
-        return cassette.CassetteContextDecorator.from_args(cls, *args, **kwargs)
+    def use(cls, path=None, *args, **kwargs):
+        return cassette.CassetteContextDecorator.from_args(cls, path=path, *args, **kwargs)
