@@ -45,7 +45,11 @@ for fixture in fixtures:
             new_fields['id'] = hash(request.url + ":" + request.method.lower())
             print "\033[90m   hash id from \033[0m{}\033[90m to \033[0m{}".format(entry['id'], new_fields['id'])
 
-            connection.execute(sqla.update(Entries).where(Entries.c.id == entry['id']).values(new_fields))
-            print "\033[92m   fixture updated"
+            if connection.execute("select count(*) from entries where id='{}'".format(new_fields['id'])).fetchone()[0] == 1:
+                connection.execute(sqla.delete(Entries).where(Entries.c.id == entry['id']))
+                print "   \033[1m\033[91m[WARNING]\033[0m \033[31mkey conflict, older fixture version deleted!"
+            else:
+                connection.execute(sqla.update(Entries).where(Entries.c.id == entry['id']).values(new_fields))
+                print "\033[92m   fixture updated"
         else:
             print "\033[32m   no change needed\033[0m"
