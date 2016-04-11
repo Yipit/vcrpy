@@ -23,16 +23,16 @@ fixtures.pop(0)
 for fixture in fixtures:
     connection = sqla.create_engine('sqlite:///' + fixture).connect()
     print
-    print "\033[1m{}\033[0m".format(fixture)
+    print "\033[94m{}\033[0m".format(fixture)
 
     for entry in connection.execute("select id, url, request from entries"):
-        print " {}".format(entry['url'])
+        print "\033[97m {}\033[0m".format(entry['url'])
         parsed_url = urlparse.urlparse(entry['url'])
         if parsed_url.scheme == 'https' and parsed_url.netloc.endswith(':443'):
             new_fields = {}
             parsed_url = parsed_url._replace(netloc=re.sub(':443$', '', parsed_url.netloc))
             new_url = urlparse.urlunparse(parsed_url)
-            print "\033[33m   url to {}\033[0m".format(entry['url'], new_url)
+            print "\033[90m   url to \033[0m{}".format(entry['url'], new_url)
             new_fields['url'] = new_url
 
             request = cPickle.loads(str(entry['request']))
@@ -43,8 +43,9 @@ for fixture in fixtures:
             new_fields['request'] = cPickle.dumps(request)
 
             new_fields['id'] = hash(request.url + ":" + request.method.lower())
-            print "\033[33m   hash id from {} to {}\033[0m".format(entry['id'], new_fields['id'])
+            print "\033[90m   hash id from \033[0m{}\033[90m to \033[0m{}".format(entry['id'], new_fields['id'])
 
             connection.execute(sqla.update(Entries).where(Entries.c.id == entry['id']).values(new_fields))
+            print "\033[92m   fixture updated"
         else:
             print "\033[32m   no change needed\033[0m"
