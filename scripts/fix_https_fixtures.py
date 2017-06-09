@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from six import PY2, PY3
 
 import base64
 import urlparse
 import sqlalchemy as sqla
-import cPickle
+if PY2:
+    import cPickle
+if PY3:
+    import _pickle as cPickle
 import sys
 import re
 
