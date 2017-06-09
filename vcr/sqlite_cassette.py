@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from six import PY2, PY3
+
 from . import cassette
 from .matchers import requests_match
 from .errors import UnhandledHTTPRequestError
 import sqlalchemy as sqla
-import cPickle
+if PY2:
+    import cPickle
+if PY3:
+    import _pickle as cPickle
 import base64
 import copy
 
