@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from six import PY2, PY3
+import six
 
 from . import cassette
 from .matchers import requests_match
@@ -25,7 +26,7 @@ def request_id(req):
     return req.url + ":" + req.method.lower()
 
 def response_from_db(txt):
-    d = cPickle.loads(str(txt))
+    d = cPickle.loads(six.binary_type(txt))
     d['body']['string'] = base64.b64decode(d['body']['string'])
     return d
 
