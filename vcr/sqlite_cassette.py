@@ -22,7 +22,7 @@ Entries = sqla.Table('entries', metadata,
 
 def request_id(req):
     d = req._to_dict()
-    return hash(req.url + ":" + req.method.lower())
+    return req.url + ":" + req.method.lower()
 
 def response_from_db(txt):
     d = cPickle.loads(str(txt))
