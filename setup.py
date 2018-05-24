@@ -53,7 +53,7 @@ setup(
     name='yipit_vcrpy',
     # we are branching upstream's 1.7.4.
     # so, lets keep left-hand-side the upstream version and right-hand-side our version.
-    version='1.7.4.1',
+    version='1.7.4.2',
     description=(
         "Automatically mock your HTTP interactions to simplify and "
         "speed up testing"
