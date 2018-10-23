@@ -51,9 +51,33 @@ class SQLiteCassette(cassette.Cassette):
             % (self._path, request))
 
     def _find_response(self, request):
-        resp_row = self._con.execute(sqla.select([Entries.c.response]).where(Entries.c.id==request_id(request))).fetchone()
-        if resp_row:
-            return response_from_db(resp_row[0])
+        """
+        Patch for upgrading from Python 2 to Python 3.
+
+        If the `id` column is still a hash, update it to a non-hash (result of request_id). If it's updated already, let it pass.
+        """
+
+        if PY3:
+            raise Exception('Must be run with Python 2! Downgrade to Python 2 & run the migration there.')
+
+        response_from_old_id = self._find_old_response_and_update(request)
+        if response_from_old_id:
+            return response_from_old_id
+
+        response_from_new_id = self._con.execute(sqla.select([Entries.c.response]).where(Entries.c.id==request_id(request))).fetchone()
+        if response_from_new_id:
+            return response_from_db(response_from_new_id[0])
+
+    def _find_old_response_and_update(self, request):
+        resp_row_old = self._con.execute(sqla.select([Entries.c.response]).where(Entries.c.id==hash(request_id(request)))).fetchone()
+        if resp_row_old:
+            update_stmt = sqla.update(Entries).where(Entries.c.id==hash(request_id(request))).values(id=request_id(request))
+            print('\n')
+            to_update = raw_input('Update id from {} to {}? y/n '.format(hash(request_id(request)), request_id(request)))
+            if to_update == 'y':
+                self._con.execute(update_stmt)
+                print('Updated id from {} to {}!'.format(hash(request_id(request)), request_id(request)))
+            return response_from_db(resp_row_old[0])
 
     def append(self, request, response):
         
