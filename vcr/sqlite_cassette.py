@@ -56,6 +56,12 @@ class SQLiteCassette(cassette.Cassette):
             return response_from_db(resp_row[0])
 
     def append(self, request, response):
+        
+        # Handle this explicitly to support ignoring requests to internal services,
+        # since we're overwriting cassette.Cassette's `append` which does this.
+        request = self._before_record_request(request)
+        if not request:
+            return
         rp = response_to_db(response)
         q = Entries.insert({'id': request_id(request), 'url': request.url,
                             'request': cPickle.dumps(request),
