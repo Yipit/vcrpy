@@ -9,3 +9,4 @@ pytestdebug.log
 
 fixtures/
 /docs/_build
+Makefile
